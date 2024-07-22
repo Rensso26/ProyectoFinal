@@ -1,6 +1,7 @@
 package ec.edu.uce.interfaz.service;
+
 import ec.edu.uce.interfaz.Interfaces.Serviceable;
-import ec.edu.uce.interfaz.state.User;
+import ec.edu.uce.interfaz.state.Category;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
@@ -8,7 +9,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-public class UserService implements Serviceable {
+public class CategoryService implements Serviceable {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -16,10 +17,11 @@ public class UserService implements Serviceable {
     @Override
     @Transactional
     public Object save(Object object) {
-        User existingUser = findByName(((User) object).getName());
-        if (existingUser != null) {
-            existingUser.setPassword(((User) object).getPassword());
-            return entityManager.merge(existingUser);
+        Category existingCategory = findByName(((Category) object).getName());
+        if (existingCategory != null) {
+            existingCategory.setToys(((Category) object).getToys());
+            existingCategory.setName(((Category) object).getName());
+            return entityManager.merge(existingCategory);
         } else {
             entityManager.persist(object);
             return object;
@@ -27,9 +29,9 @@ public class UserService implements Serviceable {
     }
 
     @Override
-    public User findByName(String name) {
+    public Category findByName(String name) {
         try {
-            return entityManager.createQuery("SELECT u FROM User u WHERE u.name = :name", User.class)
+            return entityManager.createQuery("SELECT c FROM Category c WHERE c.name = :name", Category.class)
                     .setParameter("name", name)
                     .getSingleResult();
         } catch (NoResultException e) {
@@ -39,26 +41,26 @@ public class UserService implements Serviceable {
 
     @Override
     public List<Object> findAll() {
-        return entityManager.createQuery("SELECT u FROM User u").getResultList();
+        return entityManager.createQuery("SELECT c FROM Category c").getResultList();
     }
 
     @Override
-    public User findById(Long id) {
-        // Since User does not have an id, this method is not applicable.
+    public Category findById(Long id) {
         return null;
     }
 
     @Override
     public void delete(Long id) {
-        // Since User does not have an id, this method is not applicable.
+
     }
 
     @Override
     public Object update(String name, Object object) {
-        User existingUser = findByName(name);
-        if (existingUser != null) {
-            existingUser.setPassword(((User) object).getPassword());
-            return entityManager.merge(existingUser);
+        Category existingCategory = findByName(name);
+        if (existingCategory != null) {
+            existingCategory.setToys(((Category) object).getToys());
+            existingCategory.setName(((Category) object).getName());
+            return entityManager.merge(existingCategory);
         } else {
             return null;
         }

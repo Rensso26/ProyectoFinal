@@ -7,7 +7,7 @@ public class CreationForm {
 
     @Id
     @Column(unique = true, nullable = false)
-    private int idToy;
+    private Long idToy;
 
     private double timeEnsable;
     private double timePinter;
@@ -17,11 +17,11 @@ public class CreationForm {
     @JoinColumn(name = "idToy")
     private Toy toy;
 
-    public int getIdToy() {
+    public Long getIdToy() {
         return idToy;
     }
 
-    public void setIdToy(int idToy) {
+    public void setIdToy(Long idToy) {
         this.idToy = idToy;
     }
 
