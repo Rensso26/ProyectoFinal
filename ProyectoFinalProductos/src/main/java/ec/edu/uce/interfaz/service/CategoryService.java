@@ -44,10 +44,6 @@ public class CategoryService implements Serviceable {
         return entityManager.createQuery("SELECT c FROM Category c").getResultList();
     }
 
-    @Override
-    public Category findById(Long id) {
-        return null;
-    }
 
     @Override
     public void delete(String name) {
@@ -66,8 +62,4 @@ public class CategoryService implements Serviceable {
         }
     }
 
-    @Override
-    public Object update(Long id, Object object) {
-        return null;
-    }
 }

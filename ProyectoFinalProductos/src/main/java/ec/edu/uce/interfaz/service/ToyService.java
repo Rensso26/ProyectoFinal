@@ -52,11 +52,6 @@ public class ToyService implements Serviceable {
     }
 
     @Override
-    public Toy findById(Long id) {
-        return entityManager.find(Toy.class, id);
-    }
-
-    @Override
     public void delete(String name) {
         Toy toy = findByName(name);
         if (toy != null) {
@@ -85,23 +80,4 @@ public class ToyService implements Serviceable {
 
     }
 
-    @Override
-    public Object update(Long id, Object object) {
-        object = new Toy();
-        Toy existingToy = findById(id);
-        if(existingToy != null) {
-            existingToy.setId(((ec.edu.uce.interfaz.state.Toy) object).getId());
-            existingToy.setName(((ec.edu.uce.interfaz.state.Toy) object).getName());
-            existingToy.setPrice(((ec.edu.uce.interfaz.state.Toy) object).getPrice());
-            existingToy.setCategory(((ec.edu.uce.interfaz.state.Toy) object).getCategory());
-            existingToy.setCreationForm( ((Toy) object).getCreationForm());
-            existingToy.setParts(((ec.edu.uce.interfaz.state.Toy) object).getParts());
-            existingToy.setColor(((ec.edu.uce.interfaz.state.Toy) object).getColor());
-            existingToy.setDescription(((ec.edu.uce.interfaz.state.Toy) object).getDescription());
-            existingToy.setImage(((ec.edu.uce.interfaz.state.Toy) object).getImage());
-            return entityManager.merge(existingToy);
-        }else {
-            return null;
-        }
-    }
 }

@@ -1,13 +1,13 @@
 package ec.edu.uce.interfaz.controller;
 
-import ec.edu.uce.interfaz.Interfaces.Controlleable;
+import ec.edu.uce.interfaz.Interfaces.ControlleableName;
 import ec.edu.uce.interfaz.service.ToyService;
 import ec.edu.uce.interfaz.state.Toy;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/fabric")
-public class ToyController implements Controlleable {
+public class ToyController implements ControlleableName {
 
     private ToyService toyService = new ToyService();
 

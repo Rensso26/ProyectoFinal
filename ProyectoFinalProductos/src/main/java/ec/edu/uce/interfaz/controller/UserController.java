@@ -1,13 +1,13 @@
 package ec.edu.uce.interfaz.controller;
 
-import ec.edu.uce.interfaz.Interfaces.Controlleable;
+import ec.edu.uce.interfaz.Interfaces.ControlleableName;
 import ec.edu.uce.interfaz.service.UserService;
 import ec.edu.uce.interfaz.state.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/fabric")
-public class UserController implements Controlleable {
+public class UserController implements ControlleableName {
 
     private UserService userService;
 

@@ -1,6 +1,7 @@
 package ec.edu.uce.interfaz.service;
 
 import ec.edu.uce.interfaz.Interfaces.Serviceable;
+import ec.edu.uce.interfaz.Interfaces.ServiceableId;
 import ec.edu.uce.interfaz.state.CreationForm;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -8,7 +9,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-public class CreationFormService implements Serviceable {
+public class CreationFormService implements ServiceableId {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -29,11 +30,6 @@ public class CreationFormService implements Serviceable {
         }
     }
 
-    @Override
-    public CreationForm findByName(String name) {
-        // Since CreationForm does not have a name, this method is not applicable.
-        return null;
-    }
 
     @Override
     public List<Object> findAll() {
@@ -46,17 +42,11 @@ public class CreationFormService implements Serviceable {
     }
 
     @Override
-    public void delete(String name) {
-        CreationForm creationForm = findByName(name);
+    public void delete(Long id) {
+        CreationForm creationForm = findById(id);
         if (creationForm != null) {
             entityManager.remove(creationForm);
         }
-    }
-
-    @Override
-    public Object update(String name, Object object) {
-        // Since CreationForm does not have a name, this method is not applicable.
-        return null;
     }
 
     @Override

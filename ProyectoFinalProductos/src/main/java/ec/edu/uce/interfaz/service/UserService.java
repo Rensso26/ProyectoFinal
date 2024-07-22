@@ -42,11 +42,6 @@ public class UserService implements Serviceable {
         return entityManager.createQuery("SELECT u FROM User u").getResultList();
     }
 
-    @Override
-    public User findById(Long id) {
-        // Since User does not have an id, this method is not applicable.
-        return null;
-    }
 
     @Override
     public void delete(String name) {
@@ -64,8 +59,4 @@ public class UserService implements Serviceable {
         }
     }
 
-    @Override
-    public Object update(Long id, Object object) {
-        return null;
-    }
 }

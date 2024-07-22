@@ -1,13 +1,13 @@
 package ec.edu.uce.interfaz.controller;
 
-import ec.edu.uce.interfaz.Interfaces.Controlleable;
+import ec.edu.uce.interfaz.Interfaces.ControlleableName;
 import ec.edu.uce.interfaz.service.CategoryService;
 import ec.edu.uce.interfaz.state.Category;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/fabric")
-public class CategoryController implements Controlleable {
+public class CategoryController implements ControlleableName {
 
     private CategoryService categoryService = new CategoryService();
 
