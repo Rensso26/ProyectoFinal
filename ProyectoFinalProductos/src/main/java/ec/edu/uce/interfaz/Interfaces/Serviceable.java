@@ -8,7 +8,7 @@ public interface Serviceable {
     List<Object> findAll();
     Object save(Object object);
     Object findById(Long id);
-    void delete(Long id);
+    void delete(String name);
     Object update(String name, Object object);
     Object update(Long id, Object object);
 

@@ -26,6 +26,8 @@ public class ToyService implements Serviceable {
             existingToy.setCreationForm(((Toy) object).getCreationForm());
             existingToy.setParts(((Toy) object).getParts());
             existingToy.setColor(((Toy) object).getColor());
+            existingToy.setImage(((Toy) object).getImage());
+            existingToy.setDescription(((Toy) object).getDescription());
             return entityManager.merge(existingToy);
         }else {
             entityManager.persist(object);
@@ -55,8 +57,8 @@ public class ToyService implements Serviceable {
     }
 
     @Override
-    public void delete(Long id) {
-        Toy toy = findById(id);
+    public void delete(String name) {
+        Toy toy = findByName(name);
         if (toy != null) {
             entityManager.remove(toy);
         }
@@ -74,6 +76,8 @@ public class ToyService implements Serviceable {
                 existingToy.setCreationForm( ((Toy) object).getCreationForm());
                 existingToy.setParts(((ec.edu.uce.interfaz.state.Toy) object).getParts());
                 existingToy.setColor(((ec.edu.uce.interfaz.state.Toy) object).getColor());
+                existingToy.setDescription(((ec.edu.uce.interfaz.state.Toy) object).getDescription());
+                existingToy.setImage(((ec.edu.uce.interfaz.state.Toy) object).getImage());
                 return entityManager.merge(existingToy);
             }else {
                 return null;
@@ -93,6 +97,8 @@ public class ToyService implements Serviceable {
             existingToy.setCreationForm( ((Toy) object).getCreationForm());
             existingToy.setParts(((ec.edu.uce.interfaz.state.Toy) object).getParts());
             existingToy.setColor(((ec.edu.uce.interfaz.state.Toy) object).getColor());
+            existingToy.setDescription(((ec.edu.uce.interfaz.state.Toy) object).getDescription());
+            existingToy.setImage(((ec.edu.uce.interfaz.state.Toy) object).getImage());
             return entityManager.merge(existingToy);
         }else {
             return null;

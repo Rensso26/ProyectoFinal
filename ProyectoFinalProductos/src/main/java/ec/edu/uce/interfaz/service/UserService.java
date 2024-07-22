@@ -49,7 +49,7 @@ public class UserService implements Serviceable {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String name) {
         // Since User does not have an id, this method is not applicable.
     }
 

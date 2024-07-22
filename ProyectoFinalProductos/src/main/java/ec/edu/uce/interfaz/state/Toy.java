@@ -13,6 +13,8 @@ public class Toy {
     private String parts;
     private long price;
     private String color;
+    private String description;
+    private String image;
 
     @OneToOne(mappedBy = "toy")
     private CreationForm creationForm;
@@ -59,6 +61,22 @@ public class Toy {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public CreationForm getCreationForm() {

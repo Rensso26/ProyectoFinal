@@ -50,7 +50,7 @@ public class CategoryService implements Serviceable {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(String name) {
 
     }
 

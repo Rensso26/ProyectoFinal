@@ -46,8 +46,8 @@ public class CreationFormService implements Serviceable {
     }
 
     @Override
-    public void delete(Long id) {
-        CreationForm creationForm = findById(id);
+    public void delete(String name) {
+        CreationForm creationForm = findByName(name);
         if (creationForm != null) {
             entityManager.remove(creationForm);
         }
