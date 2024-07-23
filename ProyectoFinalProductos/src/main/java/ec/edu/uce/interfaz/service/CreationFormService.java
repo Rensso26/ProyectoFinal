@@ -6,9 +6,10 @@ import ec.edu.uce.interfaz.state.CreationForm;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class CreationFormService implements ServiceableId {
 
     @PersistenceContext

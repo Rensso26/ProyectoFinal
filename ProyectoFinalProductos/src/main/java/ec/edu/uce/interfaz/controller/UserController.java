@@ -11,15 +11,10 @@
 
         private UserService userService;
 
-        @PostMapping
-        public User save(@RequestBody User user) {
-            return (User) userService.save(user);
-        }
-
         @Override
-        @PostMapping
+        @PostMapping("/user/")
         public Object save(@RequestBody Object object) {
-            return   userService.save (object) ;
+            return  userService.save (object) ;
         }
 
         @Override
@@ -35,7 +30,7 @@
         }
 
         @Override
-        @DeleteMapping("/category/del/{name}")
+        @DeleteMapping("/user/del/{name}")
         public void delete(String name) {
             userService.delete(name);
         }

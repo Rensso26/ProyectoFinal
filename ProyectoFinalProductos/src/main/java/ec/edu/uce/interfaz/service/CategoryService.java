@@ -2,49 +2,69 @@ package ec.edu.uce.interfaz.service;
 
 import ec.edu.uce.interfaz.Interfaces.Serviceable;
 import ec.edu.uce.interfaz.state.Category;
-import ec.edu.uce.interfaz.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import ec.edu.uce.interfaz.state.Toy;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+import java.util.List;
 @Service
 public class CategoryService implements Serviceable {
 
-    private final CategoryRepository categoryRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    @Override
+    @Transactional
+    public Object save(Object object) {
+        Category existingCategory = findByName(((Category) object).getName());
+        if (existingCategory != null) {
+            existingCategory.setToys(((Category) object).getToys());
+            return entityManager.merge(existingCategory);
+        } else {
+            entityManager.persist(object);
+            return object;
+        }
     }
 
     @Override
-    public Mono<Category> findByName(String name) {
-        return categoryRepository.findByName(name);
+    public void delete(String name) {
+        Category category = findByName(name);
+        if (category != null) {
+            entityManager.remove(category);
+        }
     }
 
     @Override
-    public Flux<Category> findAll() {
-        return categoryRepository.findAll();
+    public Category findByName(String name) {
+        try {
+            return entityManager.createQuery("SELECT c FROM Category c WHERE c.name = :name", Category.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override
-    public Mono<Category> save(Category category) {
-        return categoryRepository.save(category);
+    public List<Object> findAll() {
+        return entityManager.createQuery("SELECT c FROM Category c").getResultList();
     }
 
-    @Override
-    public Mono<Void> delete(String name) {
-        return categoryRepository.findByName(name)
-                .flatMap(existingCategory -> categoryRepository.delete(existingCategory));
-    }
+
 
     @Override
-    public Mono<Category> update(String name, Category category) {
-        return categoryRepository.findByName(name)
-                .flatMap(existingCategory -> {
-                    existingCategory.setName(category.getName());
-                    return categoryRepository.save(existingCategory);
-                });
+    public Object update(String name, Object object) {
+        Category existingCategory = findByName(name);
+        if (existingCategory != null) {
+            existingCategory.setToys(((Category) object).getToys());
+            return entityManager.merge(existingCategory);
+        } else {
+            return null;
+        }
     }
+
+
 }
