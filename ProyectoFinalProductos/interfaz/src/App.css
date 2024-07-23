@@ -1,0 +1,157 @@
+/* Importar Bootstrap */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+/* Importar fuente divertida */
+@import url(https://www.dafont.com/es/nowcloud.font?text=Juegoman%EDa);
+
+/* Estilos personalizados */
+.App {
+  text-align: center;
+}
+
+.header-title {
+  margin: 20px;
+}
+
+.header-title h1 {
+  font-family: 'Comic Neue', cursive; /* Fuente juguetona */
+  font-size: 3rem; /* Tamaño grande para el título */
+  display: inline-block;
+  background: linear-gradient(45deg, #ff6f61, #ffcc00, #61dafb, #dc3545); /* Degradado de colores */
+  -webkit-background-clip: text; /* Compatibilidad con Webkit */
+  color: transparent; /* Texto transparente para mostrar el degradado */
+  padding: 10px;
+  border-radius: 10px;
+  background-clip: text;
+}
+
+/* Aplicar color a cada letra individualmente usando spans */
+
+.header-title h1 span {
+  display: inline-block;
+  font-size: 3rem;
+  margin: 0 2px;
+  color: #adff61; /* Color inicial para demostración */
+  animation: colorChange 5s linear infinite;
+}
+
+@keyframes colorChange {
+  0% { color: #ff6f61; }
+  25% { color: #ffcc00; }
+  50% { color: #61dafb; }
+  75% { color: #dc3545; }
+  100% { color: #ff6f61; }
+}
+
+/* Otros estilos de tu aplicación */
+.login-container, .admin-panel, .client-panel, .notifications {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-container form div {
+  margin-bottom: 10px;
+}
+
+
+
+.login-container button, .admin-panel button, .client-panel button, .notifications button {
+  padding: 10px 20px;
+  background-color: #1360c5;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-panel ul, .client-panel ul, .notifications ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.admin-panel li, .client-panel li, .notifications li {
+  margin: 10px 0;
+}
+
+.admin-panel button, .client-panel button, .notifications button {
+  margin-top: 10px;
+  background-color: #dc3545;
+}
+
+.admin-panel button:hover, .client-panel button:hover, .notifications button:hover {
+  background-color: #c82333;
+}
+
+/* Estilos personalizados para ClientPanel */
+.client-panel {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.client-panel h2 {
+  color: #007bff; /* Color azul de Bootstrap */
+}
+
+.client-panel p {
+  margin-bottom: 10px;
+}
+
+.client-panel button {
+  margin-top: 10px;
+}
+
+/* Estilos para el catálogo de productos */
+.product-catalog {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.category {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.category-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.product-card {
+  width: calc(33.333% - 20px);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+}
+
+.product-image {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.product-price {
+  font-size: 1.2em;
+  color: #28a745;
+}
+
+.nav-item.active .nav-link {
+  color: red; /* Color de texto para la categoría seleccionada */
+}
+
+.nav-item .nav-link {
+  color: #000; /* Color de texto por defecto */
+}
