@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar';
 import ProductCatalog from './ProductCatalog';
-
+import Notifications from './Notifications';
 const categories = [
   {
     name: 'Juguetes Educativos',
@@ -50,14 +50,20 @@ const categories = [
   
 ];
 
+
 const ClientPanel = ({ user, onLogout }) => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
   const handleSelectCategory = (categoryName) => {
     setSelectedCategory(categoryName);
   };
 
-  const selectedProducts = categories.find(category => category.name === selectedCategory)?.products || [];
+  const handleAddProduct = (product) => {
+    setSelectedProducts(prevProducts => [...prevProducts, product]);
+  };
+
+  const selectedCategoryProducts = categories.find(category => category.name === selectedCategory)?.products || [];
 
   return (
     <div className="client-panel">
@@ -71,7 +77,8 @@ const ClientPanel = ({ user, onLogout }) => {
           <h2>Bienvenido, {user}</h2>
           <button className="btn btn-danger" onClick={onLogout}>Cerrar Sesión</button>
         </div>
-        <ProductCatalog categories={[{ name: selectedCategory, products: selectedProducts }]} />
+        <ProductCatalog products={selectedCategoryProducts} onAddProduct={handleAddProduct} />
+        <Notifications products={selectedProducts} />
       </div>
     </div>
   );
