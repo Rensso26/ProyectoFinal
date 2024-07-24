@@ -155,31 +155,3 @@
 .nav-item .nav-link {
   color: #000; /* Color de texto por defecto */
 }
-.navbar-nav .nav-item .nav-link {
-  cursor: pointer;
-  color: #333;
-}
-
-.navbar-nav .nav-item.active .nav-link {
-  font-weight: bold;
-  color: #007bff;
-}
-
-.product-catalog .category-title {
-  margin-top: 20px;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.product-catalog .product-card {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.product-catalog .product-image {
-  max-width: 100%;
-  height: auto;
-}

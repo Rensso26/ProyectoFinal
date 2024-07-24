@@ -50,7 +50,6 @@ const categories = [
   
 ];
 
-
 const ClientPanel = ({ user, onLogout }) => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
   const [selectedProducts, setSelectedProducts] = useState([]);

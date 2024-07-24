@@ -1,0 +1,10 @@
+import axios from "axios";
+const REST_API_BASE_URL = "localhost:8080/fabric/creation";
+
+export const listCreation = () => axios.get(REST_API_BASE_URL);
+
+export const createCreation = (creation) => axios.post(REST_API_BASE_URL,creation);
+
+export const updateCreation = (creation) =>axios.update(REST_API_BASE_URL,creation);
+
+export const deleteCreation = () =>axios.delete(REST_API_BASE_URL);

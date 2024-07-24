@@ -20,7 +20,6 @@ const Notifications = ({ products }) => {
               console.error('Producto inválido:', product);
               return <li key={index} className="list-group-item">Producto inválido</li>;
             }
-
             return (
               <li key={index} className="list-group-item">
                 {product.name} - ${product.price.toFixed(2)}
