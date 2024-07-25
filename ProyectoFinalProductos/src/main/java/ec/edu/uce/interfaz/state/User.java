@@ -13,6 +13,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Column(nullable = false)   // diferenciacion entre usuarios
+    private String role; // "USER" o "ADMIN"
+
     public String getPassword() {
         return password;
     }
