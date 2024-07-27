@@ -2,11 +2,11 @@ package ec.edu.uce.interfaz.Interfaces;
 
 import java.util.List;
 
-public interface Serviceable {
+public interface Serviceable<T> {
 
-    Object findByName(String name);
-    List<Object> findAll();
-    Object save(Object object);
+    T findByName(String name);
+    List<T> findAll();
+    T save(T object);
     void delete(String name);
-    Object update(String name, Object object);
+    T update(String name, T object);
 }
