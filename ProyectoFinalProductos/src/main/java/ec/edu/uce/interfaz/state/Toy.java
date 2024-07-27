@@ -1,5 +1,8 @@
 package ec.edu.uce.interfaz.state;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,11 +19,13 @@ public class Toy {
     private String description;
     private String image;
 
-    @OneToOne(mappedBy = "toy")
+    @OneToOne(mappedBy = "toy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private CreationForm creationForm;
 
     @ManyToOne
     @JoinColumn(name = "category_name")
+    @JsonBackReference
     private Category category;
 
     public int getId() {

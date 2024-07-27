@@ -1,28 +1,38 @@
 package ec.edu.uce.interfaz.state;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
 public class CreationForm {
 
     @Id
-    @Column(unique = true, nullable = false)
-    private Long idToy;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private double timeEnsable;
     private double timePinter;
     private double timePackaging;
 
+
     @OneToOne
-    @JoinColumn(name = "idToy")
+    @JoinColumn(name = "toy_id")
+    @JsonBackReference
     private Toy toy;
 
+
     public Long getIdToy() {
-        return idToy;
+        return id;
     }
 
-    public void setIdToy(Long idToy) {
-        this.idToy = idToy;
+    public void setId(Long idToy) {
+        this.id = idToy;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public double getTimeEnsable() {

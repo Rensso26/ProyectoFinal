@@ -12,17 +12,16 @@ public class User {
     private String name;
     @Column(nullable = false)
     private String password;
+    private Boolean admin;
 
-    public String getRole() {
-        return role;
+
+    public Boolean getAdmin() {
+        return admin;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
     }
-
-    @Column(nullable = false)   // diferenciacion entre usuarios
-    private String role; // "USER" o "ADMIN"
 
     public String getPassword() {
         return password;
