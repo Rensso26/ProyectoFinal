@@ -1,87 +1,72 @@
 package ec.edu.uce.interfaz.service;
 import ec.edu.uce.interfaz.Interfaces.Serviceable;
+import ec.edu.uce.interfaz.repository.CategoryRepository;
+import ec.edu.uce.interfaz.repository.CreationFormRepository;
+import ec.edu.uce.interfaz.repository.ToyRepository;
+import ec.edu.uce.interfaz.state.CreationForm;
 import ec.edu.uce.interfaz.state.Toy;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ToyService implements Serviceable {
+public class ToyService implements Serviceable<Toy> {
 
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    private ToyRepository toyRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-    @Override
-    @Transactional
-    public Object save (Object object) {
-        Toy existingToy = findByName(((Toy) object).getName());
-        if(existingToy != null) {
-            ((Toy) object).setId(existingToy.getId());
-            existingToy.setName(((Toy) object).getName());
-            existingToy.setPrice(((Toy) object).getPrice());
-            existingToy.setCategory(((Toy) object).getCategory());
-            existingToy.setCreationForm(((Toy) object).getCreationForm());
-            existingToy.setParts(((Toy) object).getParts());
-            existingToy.setColor(((Toy) object).getColor());
-            existingToy.setImage(((Toy) object).getImage());
-            existingToy.setDescription(((Toy) object).getDescription());
-            return entityManager.merge(existingToy);
-        }else {
-            entityManager.persist(object);
-            return (object);
-        }
-    }
+    @Autowired
+    private CreationFormRepository creationFormRepository;
+
 
     @Override
     public Toy findByName(String name) {
-        try{
-            return entityManager.createQuery("SELECT g FROM Toy g WHERE g.name = :name", Toy.class)
-                    .setParameter("name", name)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return null;
     }
 
     @Override
-    public List<Object> findAll() {
-        return entityManager.createQuery("SELECT g FROM Toy g").getResultList();
+    public List<Toy> findAll() {
+        return List.of();
     }
+
+
+    @Override
+    @Transactional
+    public Toy save(Toy toy) {
+        if (!categoryRepository.existsById(toy.getCategory().getName())) {
+            categoryRepository.save(toy.getCategory());
+        }
+
+        // Guarda el Toy
+        Toy savedToy = toyRepository.save(toy);
+
+        if (toy.getCreationForm() != null) {
+            CreationForm creationForm = toy.getCreationForm();
+            creationForm.setToy(savedToy);
+            creationFormRepository.save(creationForm);
+        }
+
+        return savedToy;
+    }
+
+    @Transactional
+    public List<Toy> findToysByCategory(String categoryName) {
+        return toyRepository.findByCategoryName(categoryName);
+    }
+
 
     @Override
     public void delete(String name) {
-        Toy toy = findByName(name);
-        if (toy != null) {
-            entityManager.remove(toy);
-        }
+
     }
 
     @Override
-    public Object update(String name, Object object) {
-        object = new Toy();
-         Toy existingToy = findByName(name);
-            if(existingToy != null) {
-                existingToy.setId(((ec.edu.uce.interfaz.state.Toy) object).getId());
-                existingToy.setName(((ec.edu.uce.interfaz.state.Toy) object).getName());
-                existingToy.setPrice(((ec.edu.uce.interfaz.state.Toy) object).getPrice());
-                existingToy.setCategory(((ec.edu.uce.interfaz.state.Toy) object).getCategory());
-                existingToy.setCreationForm( ((Toy) object).getCreationForm());
-                existingToy.setParts(((ec.edu.uce.interfaz.state.Toy) object).getParts());
-                existingToy.setColor(((ec.edu.uce.interfaz.state.Toy) object).getColor());
-                existingToy.setDescription(((ec.edu.uce.interfaz.state.Toy) object).getDescription());
-                existingToy.setImage(((ec.edu.uce.interfaz.state.Toy) object).getImage());
-                return entityManager.merge(existingToy);
-            }else {
-                return null;
-            }
-
+    public Toy update(String name, Toy toy) {
+        return null;
     }
-
-
-
 }

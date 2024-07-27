@@ -1,69 +1,63 @@
 package ec.edu.uce.interfaz.service;
 
 import ec.edu.uce.interfaz.Interfaces.Serviceable;
+import ec.edu.uce.interfaz.repository.CategoryRepository;
+import ec.edu.uce.interfaz.repository.ToyRepository;
 import ec.edu.uce.interfaz.state.Category;
 import ec.edu.uce.interfaz.state.Toy;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class CategoryService implements Serviceable {
+public class CategoryService implements Serviceable<Category> {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ToyRepository toyRepository;
 
     @Override
     @Transactional
-    public Object save(Object object) {
-        Category existingCategory = findByName(((Category) object).getName());
-        if (existingCategory != null) {
-            existingCategory.setToys(((Category) object).getToys());
-            return entityManager.merge(existingCategory);
-        } else {
-            entityManager.persist(object);
-            return object;
-        }
-    }
-
-    @Override
-    public void delete(String name) {
-        Category category = findByName(name);
-        if (category != null) {
-            entityManager.remove(category);
-        }
-    }
-
-    @Override
     public Category findByName(String name) {
-        try {
-            return entityManager.createQuery("SELECT c FROM Category c WHERE c.name = :name", Category.class)
-                    .setParameter("name", name)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return categoryRepository.findByName(name);
     }
 
     @Override
-    public List<Object> findAll() {
-        return entityManager.createQuery("SELECT c FROM Category c").getResultList();
+    @Transactional
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
 
-
+    @Override
+    @Transactional
+    public Category save(Category category) {
+        // Aquí puedes hacer validaciones o ajustes adicionales si es necesario
+        return categoryRepository.save(category);
+    }
 
     @Override
-    public Object update(String name, Object object) {
+    @Transactional
+    public void delete(String name) {
+
+    }
+
+    @Override
+    @Transactional
+    public Category update(String name, Category category) {
         Category existingCategory = findByName(name);
-        if (existingCategory != null) {
-            existingCategory.setToys(((Category) object).getToys());
-            return entityManager.merge(existingCategory);
-        } else {
-            return null;
-        }
+
+        // Actualiza los campos necesarios
+        existingCategory.setName(category.getName());
+        // Más campos a actualizar...
+
+        return categoryRepository.save(existingCategory);
     }
 
 

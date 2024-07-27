@@ -1,11 +1,12 @@
 package ec.edu.uce.interfaz.service;
 
-import ec.edu.uce.interfaz.Interfaces.Serviceable;
 import ec.edu.uce.interfaz.Interfaces.ServiceableId;
+import ec.edu.uce.interfaz.repository.CreationFormRepository;
 import ec.edu.uce.interfaz.state.CreationForm;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,20 +16,13 @@ public class CreationFormService implements ServiceableId {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    private CreationFormRepository creationFormRepository;
+
     @Override
     @Transactional
     public Object save(Object object) {
-        CreationForm existingCreationForm = findById(((CreationForm) object).getIdToy());
-        if (existingCreationForm != null) {
-            existingCreationForm.setTimeEnsable(((CreationForm) object).getTimeEnsable());
-            existingCreationForm.setTimePinter(((CreationForm) object).getTimePinter());
-            existingCreationForm.setTimePackaging(((CreationForm) object).getTimePackaging());
-            existingCreationForm.setToy(((CreationForm) object).getToy());
-            return entityManager.merge(existingCreationForm);
-        } else {
-            entityManager.persist(object);
-            return object;
-        }
+        return creationFormRepository.save((CreationForm) object);
     }
 
 
@@ -52,15 +46,7 @@ public class CreationFormService implements ServiceableId {
 
     @Override
     public Object update(Long id, Object object) {
-        CreationForm existingCreationForm = findById(id);
-        if (existingCreationForm != null) {
-            existingCreationForm.setTimeEnsable(((CreationForm) object).getTimeEnsable());
-            existingCreationForm.setTimePinter(((CreationForm) object).getTimePinter());
-            existingCreationForm.setTimePackaging(((CreationForm) object).getTimePackaging());
-            existingCreationForm.setToy(((CreationForm) object).getToy());
-            return entityManager.merge(existingCreationForm);
-        } else {
-            return null;
-        }
+        return null;
+
     }
 }
