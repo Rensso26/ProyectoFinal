@@ -2,12 +2,12 @@ package ec.edu.uce.interfaz.Interfaces;
 
 import java.util.List;
 
-public interface ServiceableId {
+public interface ServiceableId<T> {
 
-    List<Object> findAll();
-    Object save(Object object);
-    Object findById(Long id);
+    List<T> findAll();
+    T save(T object);
+    T findById(Long id);
     void delete(Long Id);
-    Object update(Long id, Object object);
+    T update(Long id, T object);
 
 }

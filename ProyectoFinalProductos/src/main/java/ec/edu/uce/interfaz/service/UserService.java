@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class UserService implements Serviceable {
+public class UserService implements Serviceable<User> {
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
     @Transactional
-    public Object save(Object object) {
-        return userRepository.save((User)object);
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class UserService implements Serviceable {
     }
 
     @Override
-    public List<Object> findAll() {
+    public List<User> findAll() {
         return null;
     }
 
@@ -35,7 +35,7 @@ public class UserService implements Serviceable {
     }
 
     @Override
-    public Object update(String name, Object object) {
+    public User update(String name, User user) {
         return null;
     }
 

@@ -25,7 +25,7 @@
 
         @PutMapping("/user/{name}")
         public Object update(String name, @RequestBody Object object) {
-            return userService.update(name, object);
+            return userService.update(name, (User) object);
         }
 
 

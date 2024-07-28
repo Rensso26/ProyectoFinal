@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class CreationFormService implements ServiceableId {
+public class CreationFormService implements ServiceableId<CreationForm> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -21,13 +21,12 @@ public class CreationFormService implements ServiceableId {
 
     @Override
     @Transactional
-    public Object save(Object object) {
-        return creationFormRepository.save((CreationForm) object);
+    public CreationForm save(CreationForm creationForm) {
+        return creationFormRepository.save(creationForm);
     }
 
-
     @Override
-    public List<Object> findAll() {
+    public List<CreationForm> findAll() {
         return entityManager.createQuery("SELECT c FROM CreationForm c").getResultList();
     }
 
@@ -45,7 +44,7 @@ public class CreationFormService implements ServiceableId {
     }
 
     @Override
-    public Object update(Long id, Object object) {
+    public CreationForm update(Long id, CreationForm creationForm) {
         return null;
 
     }
