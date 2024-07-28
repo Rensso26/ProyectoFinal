@@ -5,62 +5,78 @@ import { ProductContext } from '../context/ProductContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminPanel = ({ user, onLogout }) => {
-  const { selectedProducts, setSelectedProducts } = useContext(ProductContext);
+  const { productsToFabricate, setProductsToFabricate } = useContext(ProductContext);
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Actualizar la hora cada segundo
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
-    // Limpiar el intervalo cuando el componente se desmonte
     return () => clearInterval(timer);
   }, []);
 
-  // Navegar a la página de creación de productos
-  const handleCreateProduct = () => {
-    navigate('/create-product');
+  const handleAcceptProduct = (productId) => {
+    setProductsToFabricate(prev => prev.filter(p => p.id !== productId));
+    alert(`Producto ${productId} aceptado para fabricación.`);
   };
 
-  // Navegar a la página de fabricación de productos
-  const handleManufactureProduct = () => {
-    navigate('/manufacture-product');
+  const handleRejectProduct = (productId) => {
+    setProductsToFabricate(prev => prev.filter(p => p.id !== productId));
+    alert(`Producto ${productId} rechazado.`);
+  };
+
+  const handleLogoutAndClear = () => {
+    onLogout();
+    navigate('/');
   };
 
   return (
     <div className="container mt-5">
-      {/* Botón de cierre de sesión */}
       <div className="d-flex justify-content-end mb-3">
-        <button className="btn btn-danger" onClick={onLogout}>
+        <button className="btn btn-danger" onClick={handleLogoutAndClear}>
           Cerrar Sesión
         </button>
       </div>
 
-      {/* Tarjeta del panel de administrador */}
       <div className="card shadow">
         <div className="card-header bg-primary text-white text-center">
           <h2>Panel de Administrador</h2>
         </div>
         <div className="card-body">
-          {/* Mensaje de bienvenida */}
           <p className="text-center">Bienvenido, {user}</p>
 
-          {/* Mostrar la fecha y hora actual */}
           <div className="d-flex justify-content-between">
             <p>Fecha actual: {currentTime.toLocaleDateString()}</p>
             <p>Hora actual: {currentTime.toLocaleTimeString()}</p>
           </div>
 
-          {/* Botones de acciones */}
-          <div className="d-flex justify-content-around mt-4">
-            <button className="btn btn-success" onClick={handleCreateProduct}>
-              Crear Producto
-            </button>
-            <button className="btn btn-warning" onClick={handleManufactureProduct}>
-              Fabricar Producto
-            </button>
+          <div className="mt-4">
+            <h4>Productos para Fabricar</h4>
+            {productsToFabricate.length === 0 ? (
+              <p>No hay productos para fabricar.</p>
+            ) : (
+              <ul className="list-group">
+                {productsToFabricate.map(product => (
+                  <li key={product.id} className="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5>{product.name}</h5>
+                      <p>{product.description}</p>
+                      <p>Precio: ${product.price.toFixed(2)}</p>
+                    </div>
+                    <div>
+                      <button className="btn btn-success mr-2" onClick={() => handleAcceptProduct(product.id)}>
+                        Aceptar
+                      </button>
+                      <button className="btn btn-danger" onClick={() => handleRejectProduct(product.id)}>
+                        Rechazar
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>

@@ -17,7 +17,6 @@ const defaultCategories = [
     ],
   },
 ];
-
 const getImagePath = (image) => {
   try {
     return require(`../assets/images/productos/${image}`);
@@ -28,7 +27,7 @@ const getImagePath = (image) => {
 };
 
 const ClientPanel = ({ user, onLogout }) => {
-  const { selectedProducts, setSelectedProducts } = useContext(ProductContext);
+  const { selectedProducts, setSelectedProducts, productsToFabricate, setProductsToFabricate } = useContext(ProductContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(defaultCategories[0].name);
   const navigate = useNavigate();
@@ -102,11 +101,9 @@ const ClientPanel = ({ user, onLogout }) => {
   };
 
   const handleFabricate = () => {
-    // Lógica para guardar los productos seleccionados
-    console.log("Lista de productos para fabricar:", selectedProducts);
+    setProductsToFabricate(prev => [...prev, ...selectedProducts]);
+    setSelectedProducts([]);
     alert("La lista de productos ha sido guardada para su fabricación.");
-    // Aquí puedes agregar la lógica para enviar la lista al servidor o a otro componente
-    setSelectedProducts([]); // Limpiar la lista de productos seleccionados
   };
 
   const selectedCategoryProducts = categories.find(category => category.name === selectedCategory)?.products || [];
