@@ -13,7 +13,7 @@ public class ManufacturingController {
     private ManufacturingService manufacturingService;
 
     @PostMapping("/fabricate/{toyId}")
-    public Mono<String> fabricateToy(@PathVariable Long toyId) {
+    public Mono<String> fabricateToy(@PathVariable int toyId) {
         return manufacturingService.fabricateToy(toyId);
     }
 }
