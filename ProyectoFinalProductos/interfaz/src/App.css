@@ -44,26 +44,57 @@
 }
 
 /* Otros estilos de tu aplicación */
-.login-container, .admin-panel, .client-panel, .notifications {
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+/* En tu archivo CSS principal */
+
+/* Fondo general más claro */
+.login-container {
+  background-color: #f0f8ff; /* Color azul claro */
 }
 
-.login-container form div {
-  margin-bottom: 10px;
+/* Cartas con bordes más visibles y colores vibrantes */
+.card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  border: 3px solid transparent; /* Configurar bordes para gradiente */
+  padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
-
-
-.login-container button, .admin-panel button, .client-panel button, .notifications button {
-  padding: 10px 20px;
-  background-color: #1360c5;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.card::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ff0066, #33ccff, #ffcc00, #33ff66);
+  z-index: -1;
 }
+
+.card-body {
+  position: relative;
+  z-index: 1;
+}
+
+.card-title {
+  color: #007bff; /* Azul vibrante */
+}
+
+.form-group label {
+  color: #333; /* Gris oscuro */
+}
+
+.btn-primary {
+  background-color: #09651f; /* Verde vibrante */
+  border-color: #28a745;
+}
+
+.btn-primary:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
 
 .admin-panel ul, .client-panel ul, .notifications ul {
   list-style-type: none;

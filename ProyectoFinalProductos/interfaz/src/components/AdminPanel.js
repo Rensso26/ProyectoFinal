@@ -1,48 +1,63 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminPanel = ({ user, onLogout }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Actualizar la hora cada segundo
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
+    // Limpiar el intervalo cuando el componente se desmonte
     return () => clearInterval(timer);
   }, []);
 
-  const handleManufacture = (product) => {
-    // Lógica para iniciar el proceso de fabricación
-    console.log(`Iniciando fabricación del producto: ${product}`);
+  // Navegar a la página de creación de productos
+  const handleCreateProduct = () => {
+    navigate('/create-product');
+  };
+
+  // Navegar a la página de fabricación de productos
+  const handleManufactureProduct = () => {
+    navigate('/manufacture-product');
   };
 
   return (
     <div className="container mt-5">
+      {/* Botón de cierre de sesión */}
+      <div className="d-flex justify-content-end mb-3">
+        <button className="btn btn-danger" onClick={onLogout}>
+          Cerrar Sesión
+        </button>
+      </div>
+
+      {/* Tarjeta del panel de administrador */}
       <div className="card shadow">
         <div className="card-header bg-primary text-white text-center">
           <h2>Panel de Administrador</h2>
         </div>
         <div className="card-body">
+          {/* Mensaje de bienvenida */}
           <p className="text-center">Bienvenido, {user}</p>
+
+          {/* Mostrar la fecha y hora actual */}
           <div className="d-flex justify-content-between">
             <p>Fecha actual: {currentTime.toLocaleDateString()}</p>
             <p>Hora actual: {currentTime.toLocaleTimeString()}</p>
           </div>
-          <button className="btn btn-danger btn-block mb-4" onClick={onLogout}>Cerrar Sesión</button>
-          <div>
-            <h3 className="text-center mb-4">Procesos de Fabricación</h3>
-            <ul className="list-group">
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-                Producto 1 
-                <button className="btn btn-success" onClick={() => handleManufacture('Producto 1')}>Fabricar</button>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-                Producto 2 
-                <button className="btn btn-success" onClick={() => handleManufacture('Producto 2')}>Fabricar</button>
-              </li>
-              {/* Agrega más productos según sea necesario */}
-            </ul>
+
+          {/* Botones de acciones */}
+          <div className="d-flex justify-content-around mt-4">
+            <button className="btn btn-success" onClick={handleCreateProduct}>
+              Crear Producto
+            </button>
+            <button className="btn btn-warning" onClick={handleManufactureProduct}>
+              Fabricar Producto
+            </button>
           </div>
         </div>
       </div>

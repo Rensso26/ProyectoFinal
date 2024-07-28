@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -22,8 +21,8 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="login-container d-flex align-items-center justify-content-center vh-100">
-      <div className="card p-4 shadow" style={{ width: '100%', maxWidth: '400px' }}>
+    <div className="login-container d-flex align-items-center justify-content-center vh-100" style={{ backgroundColor: 'transparent', border: 'none' }}>
+      <div className="card p-4" style={{ width: '100%', maxWidth: '400px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '15px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.19), 0 0 10px rgba(255, 0, 0, 0.5), 0 0 10px rgba(0, 255, 0, 0.5), 0 0 10px rgba(0, 0, 255, 0.5)' }}>
         <div className="card-body">
           <h2 className="card-title mb-4">Inicio de Sesión</h2>
           {error && <div className="alert alert-danger">{error}</div>}
