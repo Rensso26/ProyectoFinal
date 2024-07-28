@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ProductContext } from '../context/ProductContext';
 import { listPeticiones } from '../services/PeticionesServices';
 import { getToyById } from '../services/ToyServices';
+import { createManufacturing } from '../services/ManufacturingService';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminPanel = ({ user, onLogout }) => {
@@ -58,9 +59,15 @@ const AdminPanel = ({ user, onLogout }) => {
 
   // Aceptar una solicitud de fabricación
   const handleAcceptRequest = (request) => {
-    console.log("Aceptada solicitud de fabricación:", request);
-    // Ejemplo: eliminar la solicitud aceptada de la lista
-    setPeticiones(peticiones.filter(peticion => peticion.id !== request.id));
+    createManufacturing(request.id, request.cantidad)
+      .then(() => {
+        console.log("Aceptada solicitud de fabricación:", request);
+        // Ejemplo: eliminar la solicitud aceptada de la lista
+        setPeticiones(peticiones.filter(peticion => peticion.id !== request.id));
+      })
+      .catch(error => {
+        console.error('Error al aceptar la solicitud de fabricación:', error);
+      });
   };
 
   // Rechazar una solicitud de fabricación

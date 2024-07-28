@@ -18,6 +18,7 @@ public class ManufacturingService implements Subject {
 
     @Autowired
     private ToyRepository toyRepository; // para inyeccion de dependencias
+    @Autowired
     private PeticionService peticionService;
 
     private List<Observer> observers = new ArrayList<>();
