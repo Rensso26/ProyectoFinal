@@ -37,7 +37,7 @@ public class ToyController implements ControlleableName<Toy> {
     }
 
 
-    @GetMapping("/toyid/{id}")
+    @GetMapping("/toy/id/{id}")
     public ResponseEntity<Toy> findById(@PathVariable Integer id) {
         Toy toy = toyService.findById(id);
         if (toy != null) {

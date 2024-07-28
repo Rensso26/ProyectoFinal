@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { createPeticion } from '../services/PeticionesServices';
+import { ProductContext } from '../context/ProductContext';
 
-const Notifications = ({ products, onIncrement, onDecrement, onFabricate }) => {
+const Notifications = ({ onIncrement, onDecrement }) => {
+  const { selectedProducts, clearSelectedProducts } = useContext(ProductContext);
+
+  const handleFabricate = () => {
+    selectedProducts.forEach(product => {
+      const peticion = {
+        id: product.id,
+        cantidad: product.quantity
+      };
+      createPeticion(peticion)
+        .then(response => {
+          console.log('Petición creada:', response.data);
+          // Llama a clearSelectedProducts después de crear la petición
+          if (product === selectedProducts[selectedProducts.length - 1]) {
+            clearSelectedProducts();
+          }
+        })
+        .catch(error => {
+          console.error('Error al crear la petición:', error);
+        });
+    });
+  };
+
   return (
     <div>
       <h3>Productos Seleccionados</h3>
-      {products.length > 0 ? (
+      {selectedProducts.length > 0 ? (
         <ul>
-          {products.map(product => (
+          {selectedProducts.map(product => (
             <li key={product.id}>
               <span>{product.name} - </span>
               <button onClick={() => onDecrement(product)}>-</button>
@@ -18,8 +42,8 @@ const Notifications = ({ products, onIncrement, onDecrement, onFabricate }) => {
       ) : (
         <p>No hay productos seleccionados.</p>
       )}
-      {products.length > 0 && (
-        <button className="btn btn-primary mt-3" onClick={onFabricate}>
+      {selectedProducts.length > 0 && (
+        <button className="btn btn-primary mt-3" onClick={handleFabricate}>
           Fabricar
         </button>
       )}

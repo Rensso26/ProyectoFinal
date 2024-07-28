@@ -1,4 +1,3 @@
-// App.js
 import React, { useState } from 'react';
 import './App.css';
 import Login from './components/Login';
@@ -8,7 +7,7 @@ import CreateProduct from './components/CreateProduct';
 import ManufactureProduct from './components/ManufactureProduct';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import ProductProvider from './context/ProductContext'; // Importa el ProductProvider
+import ProductProvider from './context/ProductContext'; // Importa ProductProvider
 
 function App() {
   const [user, setUser] = useState(null);
