@@ -18,6 +18,7 @@ public class ManufacturingService implements Subject {
 
     @Autowired
     private ToyRepository toyRepository; // para inyeccion de dependencias
+    private PeticionService peticionService;
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -55,6 +56,7 @@ public class ManufacturingService implements Subject {
                 notifyObservers("Fabricacio interrupida por " + toy.getName() + " copia " + i);
             }
         }
+        peticionService.delete((long) toyId);
         return CompletableFuture.completedFuture(null);
     }
 }
