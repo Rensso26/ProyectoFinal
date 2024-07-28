@@ -16,9 +16,9 @@ public class ManufacturingService {
     private ToyRepository toyRepository;
 
     @Async
-    public CompletableFuture<String> fabricateToyAsync(Long toyId) {
+    public CompletableFuture<String> fabricateToyAsync(int toyId) {
         return CompletableFuture.supplyAsync(() -> {
-            Toy toy = toyRepository.findById(Math.toIntExact(toyId)).orElseThrow(() -> new RuntimeException("Toy not found"));
+            Toy toy = toyRepository.findById((toyId)).orElseThrow(() -> new RuntimeException("Toy not found"));
             double totalTime = toy.getCreationForm().getTimeEnsable() + toy.getCreationForm().getTimePinter() +
                     toy.getCreationForm().getTimePackaging();
             try {
@@ -30,7 +30,7 @@ public class ManufacturingService {
         });
     }
 
-    public Mono<String> fabricateToy(Long toyId) {
+    public Mono<String> fabricateToy(int toyId) {
         return Mono.fromFuture(fabricateToyAsync(toyId));
     }
 }
