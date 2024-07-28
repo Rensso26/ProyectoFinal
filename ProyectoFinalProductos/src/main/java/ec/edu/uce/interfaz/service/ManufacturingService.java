@@ -50,11 +50,11 @@ public class ManufacturingService implements Subject {
         for (int i = 1; i <= copies; i++) {
             try {
                 Thread.sleep((long) (totalTime * 1000L));
-                String message = toy.getName() + " Copia " + i + " fabricado en " + totalTime + " segundos";
-                notifyObservers(message);
+                String message = toy.getName() + " Copia numero:" + i + " fabricado en " + totalTime + " segundos";
+                System.out.println(message);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                notifyObservers("Fabricacio interrupida por " + toy.getName() + " copia " + i);
+                System.out.println("Fabricacio interrupida por " + toy.getName() + " copia " + i);
             }
         }
         peticionService.delete((long) toyId);
