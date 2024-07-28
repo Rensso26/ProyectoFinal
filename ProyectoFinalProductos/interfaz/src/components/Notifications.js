@@ -1,19 +1,27 @@
 import React from 'react';
 
-const Notifications = ({ products }) => {
+const Notifications = ({ products, onIncrement, onDecrement, onFabricate }) => {
   return (
-    <div className="notifications mt-4">
-      <h4>Notificaciones</h4>
-      {products.length === 0 ? (
-        <p>No hay productos seleccionados.</p>
-      ) : (
-        <ul className="list-group">
-          {products.map((product, index) => (
-            <li key={index} className="list-group-item">
-              {product.name} - ${product.price.toFixed(2)}
+    <div>
+      <h3>Productos Seleccionados</h3>
+      {products.length > 0 ? (
+        <ul>
+          {products.map(product => (
+            <li key={product.id}>
+              <span>{product.name} - </span>
+              <button onClick={() => onDecrement(product)}>-</button>
+              <span> {product.quantity} </span>
+              <button onClick={() => onIncrement(product)}>+</button>
             </li>
           ))}
         </ul>
+      ) : (
+        <p>No hay productos seleccionados.</p>
+      )}
+      {products.length > 0 && (
+        <button className="btn btn-primary mt-3" onClick={onFabricate}>
+          Fabricar
+        </button>
       )}
     </div>
   );

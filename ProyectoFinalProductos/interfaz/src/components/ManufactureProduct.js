@@ -1,12 +1,14 @@
 // src/components/ManufactureProduct.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ProductContext } from '../context/ProductContext';
 
 const ManufactureProduct = () => {
+  const navigate = useNavigate();
+  const { selectedProducts } = useContext(ProductContext); // Obtener productos seleccionados desde el contexto
   const [productId, setProductId] = useState('');
   const [quantity, setQuantity] = useState('');
-  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,6 +51,16 @@ const ManufactureProduct = () => {
         </div>
         <button type="submit" className="btn btn-primary">Solicitar Fabricación</button>
       </form>
+
+      {/* Mostrar lista de productos seleccionados para fabricar */}
+      <h3>Productos Seleccionados para Fabricar</h3>
+      <ul>
+        {selectedProducts.map(product => (
+          <li key={product.id}>
+            {product.name} - Cantidad: {product.quantity}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

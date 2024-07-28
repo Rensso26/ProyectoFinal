@@ -1,18 +1,19 @@
 package ec.edu.uce.interfaz.state;
 
+
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class ProductRequest {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_name")
-    private User user;
+    private String productName;
+    private int fabricationTime; // Tiempo en segundos
+    private String status;
+
+    // Getters y setters
 
     public Long getId() {
         return id;
@@ -22,20 +23,20 @@ public class ProductRequest {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public Toy getToy() {
-        return toy;
+    public int getFabricationTime() {
+        return fabricationTime;
     }
 
-    public void setToy(Toy toy) {
-        this.toy = toy;
+    public void setFabricationTime(int fabricationTime) {
+        this.fabricationTime = fabricationTime;
     }
 
     public String getStatus() {
@@ -45,29 +46,4 @@ public class ProductRequest {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public LocalDateTime getRequestTime() {
-        return requestTime;
-    }
-
-    public void setRequestTime(LocalDateTime requestTime) {
-        this.requestTime = requestTime;
-    }
-
-    public LocalDateTime getCompletionTime() {
-        return completionTime;
-    }
-
-    public void setCompletionTime(LocalDateTime completionTime) {
-        this.completionTime = completionTime;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "toy_id")
-    private Toy toy;
-
-    private String status; // "PENDING", "APPROVED", "REJECTED"
-    private LocalDateTime requestTime;
-    private LocalDateTime completionTime;
-
 }

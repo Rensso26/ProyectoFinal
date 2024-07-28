@@ -1,87 +1,43 @@
 package ec.edu.uce.interfaz.service;
 
+import ec.edu.uce.interfaz.Interfaces.ProductRequestObserver;
 import ec.edu.uce.interfaz.repository.ProductRequestRepository;
 import ec.edu.uce.interfaz.state.ProductRequest;
-import ec.edu.uce.interfaz.state.Toy;
-import ec.edu.uce.interfaz.state.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class ProductRequestService {
+public class ProductRequestService implements ProductRequestObserver {
 
     @Autowired
     private ProductRequestRepository productRequestRepository;
 
-    /**
-     * Crea una nueva solicitud de producto.
-     *
-     * @param user El usuario que realiza la solicitud.
-     * @param toy El juguete solicitado.
-     * @return La solicitud de producto creada.
-     */
-    public ProductRequest createRequest(User user, Toy toy) {
-        ProductRequest request = new ProductRequest();
-        request.setUser(user);
-        request.setToy(toy);
+    public ProductRequest createRequest(ProductRequest request) {
         request.setStatus("PENDING");
-        return productRequestRepository.save(request);
+        ProductRequest savedRequest = productRequestRepository.save(request);
+
+        new Thread(() -> {
+            try {
+                // Emular el tiempo de fabricación
+                Thread.sleep(request.getFabricationTime() * 1000);
+                savedRequest.setStatus("COMPLETED");
+                productRequestRepository.save(savedRequest);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                savedRequest.setStatus("FAILED");
+                productRequestRepository.save(savedRequest);
+            }
+        }).start();
+
+        return savedRequest;
     }
 
-    /**
-     * Encuentra una solicitud de producto por su ID.
-     *
-     * @param id El ID de la solicitud.
-     * @return La solicitud de producto.
-     */
-    public ProductRequest findById(Long id) {
+    @Override
+    public void update(ProductRequest request) {
+        // Lógica adicional si es necesario
+    }
+
+    public ProductRequest getRequestStatus(Long id) {
         return productRequestRepository.findById(id).orElse(null);
-    }
-
-    /**
-     * Actualiza una solicitud de producto.
-     *
-     * @param request La solicitud de producto a actualizar.
-     * @return La solicitud de producto actualizada.
-     */
-    public ProductRequest update(ProductRequest request) {
-        return productRequestRepository.save(request);
-    }
-
-    /**
-     * Obtiene todas las solicitudes pendientes.
-     *
-     * @return Una lista de todas las solicitudes pendientes.
-     */
-    public List<ProductRequest> getPendingRequests() {
-        return productRequestRepository.findByStatus("PENDING");
-    }
-
-    /**
-     * Aprueba una solicitud de producto.
-     *
-     * @param id El ID de la solicitud a aprobar.
-     */
-    public void approveRequest(Long id) {
-        ProductRequest request = findById(id);
-        if (request != null) {
-            request.setStatus("APPROVED");
-            update(request);
-        }
-    }
-
-    /**
-     * Rechaza una solicitud de producto.
-     *
-     * @param id El ID de la solicitud a rechazar.
-     */
-    public void rejectRequest(Long id) {
-        ProductRequest request = findById(id);
-        if (request != null) {
-            request.setStatus("REJECTED");
-            update(request);
-        }
     }
 }

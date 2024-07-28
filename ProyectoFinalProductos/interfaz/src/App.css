@@ -107,7 +107,7 @@
 
 .admin-panel button, .client-panel button, .notifications button {
   margin-top: 10px;
-  background-color: #dc3545;
+  background-color: #e11529;
 }
 
 .admin-panel button:hover, .client-panel button:hover, .notifications button:hover {
