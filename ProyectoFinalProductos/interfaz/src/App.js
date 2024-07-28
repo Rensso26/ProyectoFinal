@@ -3,6 +3,7 @@ import './App.css';
 import Login from './components/Login';
 import AdminPanel from './components/AdminPanel';
 import ClientPanel from './components/ClientPanel';
+import CreateProduct from './components/CreateProduct'; // Asegúrate de importar el componente
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
@@ -42,7 +43,10 @@ function App() {
         {!user ? (
           <Route path="/" element={<Login onLogin={handleLogin} />} />
         ) : profile === 'admin' ? (
-          <Route path="/admin" element={<AdminPanel user={user} onLogout={handleLogout} />} />
+          <>
+            <Route path="/admin" element={<AdminPanel user={user} onLogout={handleLogout} />} />
+            <Route path="/create-product" element={<CreateProduct />} />
+          </>
         ) : (
           <Route path="/client" element={<ClientPanel user={user} onLogout={handleLogout} />} />
         )}

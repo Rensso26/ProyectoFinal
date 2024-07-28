@@ -1,7 +1,7 @@
-// src/components/CreateProduct.js
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { createToy } from '../services/ToyServices';
 
 const CreateProduct = () => {
   const [name, setName] = useState('');
@@ -34,8 +34,15 @@ const CreateProduct = () => {
         name: category,
       },
     };
-    console.log('Crear producto:', newProduct);
-    navigate('/admin');
+
+    createToy(newProduct)
+      .then(response => {
+        console.log('Producto creado:', response.data);
+        navigate('/admin');
+      })
+      .catch(error => {
+        console.error('Error al crear el producto:', error);
+      });
   };
 
   return (
