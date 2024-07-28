@@ -36,6 +36,16 @@ public class ToyController implements ControlleableName<Toy> {
         }
     }
 
+    @Override
+    @GetMapping("/all")
+    public ResponseEntity<List<Toy>> getAll() {
+        List<Toy>toys = toyService.findAll();
+        if (toys.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Devuelve 204 si no hay categorías
+        }
+        return ResponseEntity.ok(toys);
+    }
+
     @GetMapping("/toy/category/{name}")
     public ResponseEntity<List<Toy>> getToysByCategory(@PathVariable String name) {
         List<Toy> toys = toyService.findToysByCategory(name);
@@ -55,7 +65,7 @@ public class ToyController implements ControlleableName<Toy> {
     }
 
     @Override
-    @DeleteMapping("toy/del/{id}")
+    @DeleteMapping("toy/del/{name}")
     public ResponseEntity<Void> delete(@PathVariable String name) {
         toyService.delete(name);
         return ResponseEntity.noContent().build();

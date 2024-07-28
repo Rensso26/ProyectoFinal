@@ -21,14 +21,24 @@ public class ReactiveProductRequestService {
     @Autowired
     private ToyService toyService;
 
-
-
+    /**
+     * Crea una solicitud de producto de manera reactiva.
+     *
+     * @param user El usuario que realiza la solicitud.
+     * @param toy  El juguete solicitado.
+     * @return Un Mono que emite la solicitud de producto creada.
+     */
     public Mono<ProductRequest> createRequest(User user, Toy toy) {
         return Mono.fromCallable(() -> productRequestService.createRequest(user, toy))
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
-
+    /**
+     * Procesa una solicitud de producto de manera reactiva.
+     *
+     * @param requestId El ID de la solicitud a procesar.
+     * @return Un Mono que completa cuando la solicitud ha sido procesada.
+     */
     public Mono<Void> processRequest(Long requestId) {
         return Mono.fromRunnable(() -> {
             ProductRequest request = productRequestService.findById(requestId);
@@ -49,7 +59,11 @@ public class ReactiveProductRequestService {
         }).subscribeOn(Schedulers.boundedElastic()).then();
     }
 
-
+    /**
+     * Obtiene todas las solicitudes pendientes de manera reactiva.
+     *
+     * @return Un Flux que emite todas las solicitudes pendientes.
+     */
     public Flux<ProductRequest> getPendingRequests() {
         return Flux.fromIterable(productRequestService.getPendingRequests());
     }

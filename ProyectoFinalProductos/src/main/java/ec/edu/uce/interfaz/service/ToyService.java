@@ -31,7 +31,7 @@ public class ToyService implements Serviceable<Toy> {
 
     @Override
     public List<Toy> findAll() {
-        return List.of();
+        return toyRepository.findAll();
     }
 
 

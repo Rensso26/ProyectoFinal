@@ -1,6 +1,9 @@
 package ec.edu.uce.interfaz.Interfaces;
+import ec.edu.uce.interfaz.state.Category;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 public interface ControlleableName<T> {
 
@@ -9,6 +12,9 @@ public interface ControlleableName<T> {
 
     @GetMapping("/{name}")
     ResponseEntity<T> findByName(@PathVariable String name);
+
+    @GetMapping("/all")
+    public ResponseEntity<List<T>> getAll();
 
     @PutMapping("/{name}")
     ResponseEntity<T> update(@PathVariable String name, @RequestBody T object);
