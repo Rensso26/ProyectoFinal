@@ -29,6 +29,11 @@ public class ToyService implements Serviceable<Toy> {
         return null;
     }
 
+
+    public Toy findById(Integer id) {
+        return toyRepository.findById(id).orElse(null);
+    }
+
     @Override
     public List<Toy> findAll() {
         return toyRepository.findAll();

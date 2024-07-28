@@ -36,6 +36,18 @@ public class ToyController implements ControlleableName<Toy> {
         }
     }
 
+
+    @GetMapping("/toyid/{id}")
+    public ResponseEntity<Toy> findById(@PathVariable Integer id) {
+        Toy toy = toyService.findById(id);
+        if (toy != null) {
+            return ResponseEntity.ok(toy);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
     @Override
     @GetMapping("/all")
     public ResponseEntity<List<Toy>> getAll() {
