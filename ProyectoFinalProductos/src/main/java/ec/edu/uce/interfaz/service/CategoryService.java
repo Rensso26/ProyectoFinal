@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class CategoryService implements Serviceable<Category> {
 
@@ -34,23 +33,27 @@ public class CategoryService implements Serviceable<Category> {
     @Override
     @Transactional
     public Category save(Category category) {
+        // Aquí puedes hacer validaciones o ajustes adicionales si es necesario
         return categoryRepository.save(category);
     }
 
     @Override
     @Transactional
-    public Category update(String name, Category updatedCategory) {
-        Category category = categoryRepository.findByName(name);
-        if (category != null) {
-            category.setName(updatedCategory.getName());
-            return categoryRepository.save(category);
-        }
-        return null;
+    public void delete(String name) {
+
     }
 
     @Override
     @Transactional
-    public void delete(String name) {
-        categoryRepository.deleteByName(name);
+    public Category update(String name, Category category) {
+        Category existingCategory = findByName(name);
+
+        // Actualiza los campos necesarios
+        existingCategory.setName(category.getName());
+        // Más campos a actualizar...
+
+        return categoryRepository.save(existingCategory);
     }
+
+
 }
