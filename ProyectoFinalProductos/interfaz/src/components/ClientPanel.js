@@ -1,10 +1,12 @@
-// src/components/ClientPanel.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar';
 import ProductCatalog from './ProductCatalog';
 import Notifications from './Notifications';
-const categories = [
+import { listCategories } from '../services/CategoryServices';
+import { useNavigate } from 'react-router-dom';
+
+const defaultCategories = [
   {
     name: 'Juguetes Educativos',
     products: [
@@ -12,47 +14,58 @@ const categories = [
       { id: 2, name: 'Juego de Química', description: 'Kit de experimentos', price: 39.99, image: require('../assets/images/productos/Educativos/quimica.png') },
     ],
   },
-  {
-    name: 'Juguetes de Acción y Figuras',
-    products: [
-      { id: 3, name: 'Vehículos de juguete', description: 'Edición especial', price: 29.99, image: require('../assets/images/productos/Accion/vehiculo.png') },
-      { id: 4, name: 'Figura de Acción', description: 'Figura de superhéroe', price: 24.99, image: require('../assets/images/productos/Accion/figura.png') },
-    ],
-  },
-  {
-    name: 'Juguetes Electrónicos',
-    products: [
-      { id: 5, name: 'Robot', description: 'Robot interactivo', price: 49.99, image: require('../assets/images/productos/Electronicos/robot.png') },
-      { id: 6, name: 'Dron', description: 'Dron con cámara', price: 89.99, image: require('../assets/images/productos/Electronicos/dron.png') },
-    ],
-  },
-  {
-    name: 'Juguetes de Peluche',
-    products: [
-      { id: 7, name: 'Animales de peluche', description: 'Suaves y duraderos', price: 19.99, image: require('../assets/images/productos/Peluches/peluches.png') },
-      { id: 8, name: 'Muñeca', description: 'Muñecas suaves y flexibles', price: 29.99, image: require('../assets/images/productos/Peluches/muñeca.png') },
-    ],
-  },
-  {
-    name: 'Juguetes Deportivos',
-    products: [
-      { id: 9, name: 'Balones y pelotas', description: 'Resistentes y perfectos para jugar', price: 15.99, image: require('../assets/images/productos/Deportivos/balones.jpg') },
-      { id: 10, name: 'Raquetas y palos', description: 'Ligeros y duraderos', price: 24.99, image: require('../assets/images/productos/Deportivos/raqueta5.jpg') },
-    ],
-  },
-  {
-    name: 'Juguetes de Construcción',
-    products: [
-      { id: 11, name: 'Bloques de contrucción (plasticos)', description: 'Desarrolla habilidades motoras', price: 34.99, image: require('../assets/images/productos/Construccion/bloques.jpg') },
-      { id: 12, name: 'Kits de modelado y trenes', description: 'Estimulan la creatividad', price: 44.99, image: require('../assets/images/productos/Construccion/trenes.jpg') },
-    ],
-  },
-  
 ];
 
+const getImagePath = (image) => {
+  try {
+    return require(`../assets/images/productos/${image}`);
+  } catch (err) {
+    console.error(`Error loading image: ${image}`, err);
+    return image.startsWith('http') ? image : null;
+  }
+};
+
 const ClientPanel = ({ user, onLogout }) => {
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(defaultCategories[0].name);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    listCategories()
+      .then((response) => {
+        console.log("API response:", response.data);
+
+        const apiCategories = response.data.map(category => {
+          console.log("Category from API:", category);
+
+          const products = category.toys.map(toy => {
+            console.log("Toy from API:", toy);
+
+            return {
+              id: toy.id,
+              name: toy.name,
+              description: toy.description,
+              price: toy.price,
+              image: getImagePath(toy.image),
+            };
+          });
+
+          return {
+            name: category.name,
+            products,
+          };
+        });
+
+        console.log("Mapped API categories:", apiCategories);
+
+        setCategories([...defaultCategories, ...apiCategories]);
+      })
+      .catch(error => {
+        console.error("API error:", error);
+        setCategories(defaultCategories);
+      });
+  }, []);
 
   const handleSelectCategory = (categoryName) => {
     setSelectedCategory(categoryName);
@@ -60,6 +73,12 @@ const ClientPanel = ({ user, onLogout }) => {
 
   const handleAddProduct = (product) => {
     setSelectedProducts(prevProducts => [...prevProducts, product]);
+  };
+
+  const handleLogoutAndClear = () => {
+    setSelectedProducts([]);
+    onLogout();
+    navigate('/');
   };
 
   const selectedCategoryProducts = categories.find(category => category.name === selectedCategory)?.products || [];
@@ -74,7 +93,7 @@ const ClientPanel = ({ user, onLogout }) => {
       <div className="container mt-5">
         <div className="header d-flex justify-content-between align-items-center mb-4">
           <h2>Bienvenido, {user}</h2>
-          <button className="btn btn-danger" onClick={onLogout}>Cerrar Sesión</button>
+          <button className="btn btn-danger" onClick={handleLogoutAndClear}>Cerrar Sesión</button>
         </div>
         <ProductCatalog products={selectedCategoryProducts} onAddProduct={handleAddProduct} />
         <Notifications products={selectedProducts} />
