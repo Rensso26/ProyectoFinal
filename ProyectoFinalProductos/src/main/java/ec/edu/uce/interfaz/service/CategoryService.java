@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class CategoryService implements Serviceable<Category> {
 
@@ -50,7 +51,7 @@ public class CategoryService implements Serviceable<Category> {
 
         // Actualiza los campos necesarios
         existingCategory.setName(category.getName());
-        // Más campos a actualizar...
+
 
         return categoryRepository.save(existingCategory);
     }
