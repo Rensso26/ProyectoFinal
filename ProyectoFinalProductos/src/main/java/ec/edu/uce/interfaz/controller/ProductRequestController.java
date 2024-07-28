@@ -24,13 +24,7 @@ public class ProductRequestController {
     @Autowired
     private ToyService toyService;
 
-    /**
-     * Crea una nueva solicitud de producto.
-     *
-     * @param username El nombre de usuario que realiza la solicitud.
-     * @param toyname El nombre del juguete solicitado.
-     * @return Un Mono que emite la solicitud de producto creada.
-     */
+
     @PostMapping
     public Mono<ProductRequest> createRequest(@RequestParam String username, @RequestParam String toyname) {
         User user = userService.findByName(username);
