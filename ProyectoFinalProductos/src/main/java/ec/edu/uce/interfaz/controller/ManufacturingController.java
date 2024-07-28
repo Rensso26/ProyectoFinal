@@ -12,8 +12,8 @@ public class ManufacturingController {
     @Autowired
     private ManufacturingService manufacturingService;
 
-    @PostMapping("/fabricate/{toyId}")
-    public Mono<String> fabricateToy(@PathVariable int toyId) {
-        return manufacturingService.fabricateToy(toyId);
+    @PostMapping("/fabricate/{toyId}/{copies}")
+    public Mono<Void> fabricateToy(@PathVariable int toyId, @PathVariable int copies) {
+        return Mono.fromFuture(manufacturingService.fabricateToys(toyId, copies));
     }
 }
