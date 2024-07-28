@@ -34,31 +34,16 @@ const ClientPanel = ({ user, onLogout }) => {
   useEffect(() => {
     listCategories()
       .then((response) => {
-        console.log("API response:", response.data);
-
         const apiCategories = response.data.map(category => {
-          console.log("Category from API:", category);
-
-          const products = category.toys.map(toy => {
-            console.log("Toy from API:", toy);
-
-            return {
-              id: toy.id,
-              name: toy.name,
-              description: toy.description,
-              price: toy.price,
-              image: getImagePath(toy.image),
-            };
-          });
-
-          return {
-            name: category.name,
-            products,
-          };
+          const products = category.toys.map(toy => ({
+            id: toy.id,
+            name: toy.name,
+            description: toy.description,
+            price: toy.price,
+            image: getImagePath(toy.image),
+          }));
+          return { name: category.name, products };
         });
-
-        console.log("Mapped API categories:", apiCategories);
-
         setCategories([...defaultCategories, ...apiCategories]);
       })
       .catch(error => {
@@ -72,7 +57,40 @@ const ClientPanel = ({ user, onLogout }) => {
   };
 
   const handleAddProduct = (product) => {
-    setSelectedProducts(prevProducts => [...prevProducts, product]);
+    setSelectedProducts(prevProducts => {
+      const existingProduct = prevProducts.find(p => p.id === product.id);
+      if (existingProduct) {
+        if (existingProduct.quantity < 5) {
+          return prevProducts.map(p =>
+            p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
+          );
+        } else {
+          alert("Cantidad máxima de este producto alcanzada.");
+          return prevProducts;
+        }
+      } else {
+        return [...prevProducts, { ...product, quantity: 1 }];
+      }
+    });
+  };
+
+  const handleIncrement = (product) => {
+    setSelectedProducts(prevProducts => 
+      prevProducts.map(p => 
+        p.id === product.id ? { ...p, quantity: p.quantity < 5 ? p.quantity + 1 : p.quantity } : p
+      )
+    );
+    if (product.quantity >= 5) {
+      alert("Cantidad máxima de este producto alcanzada.");
+    }
+  };
+
+  const handleDecrement = (product) => {
+    setSelectedProducts(prevProducts => 
+      prevProducts.map(p => 
+        p.id === product.id ? { ...p, quantity: p.quantity > 1 ? p.quantity - 1 : 1 } : p
+      )
+    );
   };
 
   const handleLogoutAndClear = () => {
@@ -81,22 +99,46 @@ const ClientPanel = ({ user, onLogout }) => {
     navigate('/');
   };
 
+  const handleFabricate = () => {
+    // Lógica para guardar los productos seleccionados
+    console.log("Lista de productos para fabricar:", selectedProducts);
+    alert("La lista de productos ha sido guardada para su fabricación.");
+    // Aquí puedes agregar la lógica para enviar la lista al servidor o a otro componente
+    setSelectedProducts([]); // Limpiar la lista de productos seleccionados
+  };
+
   const selectedCategoryProducts = categories.find(category => category.name === selectedCategory)?.products || [];
 
   return (
-    <div className="client-panel">
-      <Navbar 
-        categories={categories} 
-        onSelectCategory={handleSelectCategory} 
-        selectedCategory={selectedCategory}
-      />
-      <div className="container mt-5">
-        <div className="header d-flex justify-content-between align-items-center mb-4">
-          <h2>Bienvenido, {user}</h2>
-          <button className="btn btn-danger" onClick={handleLogoutAndClear}>Cerrar Sesión</button>
+    <div>
+      {/* Contenedor superior fuera del panel principal */}
+      <div className="d-flex justify-content-between align-items-center p-3 mb-4" style={{ backgroundColor: '#ffffff', borderRadius: '5px' }}>
+        <h2 className="mb-0" style={{ color: '#007bff' }}>Bienvenido, {user}</h2>
+        <button className="btn btn-danger" onClick={handleLogoutAndClear}>Cerrar Sesión</button>
+      </div>
+
+      {/* Panel principal del cliente */}
+      <div className="client-panel">
+        <Navbar 
+          categories={categories} 
+          onSelectCategory={handleSelectCategory} 
+          selectedCategory={selectedCategory}
+        />
+        <div className="container mt-3">
+          <div className="row">
+            <div className="col-md-8">
+              <ProductCatalog products={selectedCategoryProducts} onAddProduct={handleAddProduct} />
+            </div>
+            <div className="col-md-4">
+              <Notifications 
+                products={selectedProducts} 
+                onIncrement={handleIncrement} 
+                onDecrement={handleDecrement} 
+                onFabricate={handleFabricate}
+              />
+            </div>
+          </div>
         </div>
-        <ProductCatalog products={selectedCategoryProducts} onAddProduct={handleAddProduct} />
-        <Notifications products={selectedProducts} />
       </div>
     </div>
   );
