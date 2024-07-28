@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+// src/components/ManufactureProduct.js
+import React, { useState, useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ProductContext } from '../context/ProductContext';
 
 const ManufactureProduct = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const { selectedProducts = [] } = state || {}; // Recuperar productos seleccionados desde la navegación
+  const { selectedProducts } = useContext(ProductContext); // Obtener productos seleccionados desde el contexto
   const [productId, setProductId] = useState('');
   const [quantity, setQuantity] = useState('');
 

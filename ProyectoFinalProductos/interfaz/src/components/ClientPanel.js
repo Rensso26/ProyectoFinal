@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+// src/components/ClientPanel.js
+import React, { useState, useEffect, useContext } from 'react';
+import { ProductContext } from '../context/ProductContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from './Navbar';
 import ProductCatalog from './ProductCatalog';
@@ -26,9 +28,9 @@ const getImagePath = (image) => {
 };
 
 const ClientPanel = ({ user, onLogout }) => {
+  const { selectedProducts, setSelectedProducts } = useContext(ProductContext);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(defaultCategories[0].name);
-  const [selectedProducts, setSelectedProducts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {

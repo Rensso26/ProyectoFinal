@@ -1,9 +1,11 @@
-// AdminPanel.js
-import React, { useState, useEffect } from 'react';
+// src/components/AdminPanel.js
+import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ProductContext } from '../context/ProductContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminPanel = ({ user, onLogout }) => {
+  const { selectedProducts, setSelectedProducts } = useContext(ProductContext);
   const [currentTime, setCurrentTime] = useState(new Date());
   const navigate = useNavigate();
 
