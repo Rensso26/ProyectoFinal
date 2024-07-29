@@ -10,7 +10,7 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
 
     // Validación para el administrador
-    if (username === 'xavier' && password === '12345') {
+    if (username === 'admin' && password === 'admin') {
       onLogin(username, 'admin');
     } else if (username !== '' && password !== '') {
       // Suponemos que cualquier otro usuario es un cliente normal
