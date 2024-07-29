@@ -57,8 +57,14 @@ Este proyecto es una simulación de un sistema de fabricación de juguetes. La a
     ```bash
     npm install
     ```
+3. **Instalar librerias necesarias**:
+    ```bash
+    npm install axios
+    npm install @stomp/stompjs sockjs-client
+    npl install react-router-dom
+    ```
 
-3. **Iniciar la aplicación React**:
+4. **Iniciar la aplicación React**:
     ```bash
     npm start
     ```
