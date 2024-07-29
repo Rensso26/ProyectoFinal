@@ -186,3 +186,48 @@
 .nav-item .nav-link {
   color: #000; /* Color de texto por defecto */
 }
+/* Estilos para el Navbar */
+.navbar {
+  background-color: #f0f8ff; /* Color celeste claro para el fondo del navbar */
+  border-bottom: 2px solid #782cd5; /* Línea de borde inferior en un tono celeste más suave */
+}
+
+.navbar-nav {
+  background-color: #e0f7ff; /* Color celeste más oscuro para el fondo de los items */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 5px;
+}
+
+.navbar-nav .nav-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.navbar-nav .nav-item a.nav-link {
+  color: #ffffff; /* Color del texto por defecto */
+  padding: 10px 20px;
+  font-size: 1.1rem; /* Tamaño de fuente aumentado */
+  font-weight: bold; /* Texto en negrita */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transiciones para el fondo y color */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Sombra más oscura para mejorar la legibilidad */
+  border-radius: 5px; /* Bordes redondeados */
+}
+
+.navbar-nav .nav-item.active a.nav-link {
+  background: linear-gradient(45deg, #007bff, #00c2ff, #00bfff, #87cefa); /* Degradado celeste y azul claro para categoría activa */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none; /* Quitar sombra del texto para la categoría activa */
+}
+
+.navbar-nav .nav-item a.nav-link:hover {
+  background: linear-gradient(45deg, #00aaff, #00c2ff, #1e90ff, #87cefa); /* Degradado celeste y azul claro para hover */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada para hover */
+}
