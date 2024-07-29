@@ -4,6 +4,7 @@ import { ProductContext } from '../context/ProductContext';
 import { listPeticiones } from '../services/PeticionesServices';
 import { getToyById } from '../services/ToyServices';
 import { createManufacturing } from '../services/ManufacturingService';
+import { getMessage } from '../services/MessageService'; // Importar el servicio de mensajes
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const AdminPanel = ({ user, onLogout }) => {
@@ -11,20 +12,18 @@ const AdminPanel = ({ user, onLogout }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [peticiones, setPeticiones] = useState([]);
   const [toys, setToys] = useState({});
+  const [fabricationMessage, setFabricationMessage] = useState(""); // Estado para el mensaje de fabricación
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Actualizar la hora cada segundo
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
-    // Limpiar el intervalo cuando el componente se desmonte
     return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
-    // Obtener las peticiones cuando el componente se monte
     listPeticiones()
       .then(response => {
         setPeticiones(response.data);
@@ -47,22 +46,32 @@ const AdminPanel = ({ user, onLogout }) => {
       });
   }, []);
 
-  // Navegar a la página de creación de productos
+  useEffect(() => {
+    const messageInterval = setInterval(() => {
+      getMessage()
+        .then(response => {
+          setFabricationMessage(response.data.content);
+        })
+        .catch(error => {
+          console.error('Error al obtener el mensaje de fabricación:', error);
+        });
+    }, 1000);
+
+    return () => clearInterval(messageInterval);
+  }, []);
+
   const handleCreateProduct = () => {
     navigate('/create-product');
   };
 
-  // Navegar a la página de fabricación de productos
   const handleManufactureProduct = () => {
     navigate('/manufacture-product');
   };
 
-  // Aceptar una solicitud de fabricación
   const handleAcceptRequest = (request) => {
     createManufacturing(request.id, request.cantidad)
       .then(() => {
         console.log("Aceptada solicitud de fabricación:", request);
-        // Ejemplo: eliminar la solicitud aceptada de la lista
         setPeticiones(peticiones.filter(peticion => peticion.id !== request.id));
       })
       .catch(error => {
@@ -70,38 +79,31 @@ const AdminPanel = ({ user, onLogout }) => {
       });
   };
 
-  // Rechazar una solicitud de fabricación
   const handleRejectRequest = (request) => {
     console.log("Rechazada solicitud de fabricación:", request);
-    // Ejemplo: eliminar la solicitud rechazada de la lista
     setPeticiones(peticiones.filter(peticion => peticion.id !== request.id));
   };
 
   return (
     <div className="container mt-5">
-      {/* Botón de cierre de sesión */}
       <div className="d-flex justify-content-end mb-3">
         <button className="btn btn-danger" onClick={onLogout}>
           Cerrar Sesión
         </button>
       </div>
 
-      {/* Tarjeta del panel de administrador */}
       <div className="card shadow">
         <div className="card-header bg-primary text-white text-center">
           <h2>Panel de Administrador</h2>
         </div>
         <div className="card-body">
-          {/* Mensaje de bienvenida */}
           <p className="text-center">Bienvenido, {user}</p>
 
-          {/* Mostrar la fecha y hora actual */}
           <div className="d-flex justify-content-between">
             <p>Fecha actual: {currentTime.toLocaleDateString()}</p>
             <p>Hora actual: {currentTime.toLocaleTimeString()}</p>
           </div>
 
-          {/* Botones de acciones */}
           <div className="d-flex justify-content-around mt-4">
             <button className="btn btn-success" onClick={handleCreateProduct}>
               Crear Producto
@@ -111,7 +113,6 @@ const AdminPanel = ({ user, onLogout }) => {
             </button>
           </div>
 
-          {/* Listado de solicitudes de fabricación */}
           <div className="mt-5">
             <h3>Solicitudes de Fabricación</h3>
             <ul className="list-group">
@@ -129,6 +130,11 @@ const AdminPanel = ({ user, onLogout }) => {
                 <p>No hay solicitudes de fabricación.</p>
               )}
             </ul>
+          </div>
+
+          <div className="mt-5">
+            <h3>Mensaje de Fabricación</h3>
+            <p>{fabricationMessage}</p>
           </div>
         </div>
       </div>

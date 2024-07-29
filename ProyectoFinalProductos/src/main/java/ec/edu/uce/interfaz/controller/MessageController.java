@@ -1,26 +1,17 @@
 package ec.edu.uce.interfaz.controller;
 
-import ec.edu.uce.interfaz.service.ManufacturingService;
 import ec.edu.uce.interfaz.state.Message;
 import ec.edu.uce.interfaz.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/fabric")
-public class ManufacturingController {
-
-    @Autowired
-    private ManufacturingService manufacturingService;
+public class MessageController {
 
     @Autowired
     private MessageRepository messageRepository;
-
-    @PostMapping("/fabricate/{toyId}/{copies}")
-    public Mono<Void> fabricateToy(@PathVariable int toyId, @PathVariable int copies) {
-        return Mono.fromFuture(manufacturingService.fabricateToys(toyId, copies));
-    }
 
     @GetMapping("/message")
     public Mono<Message> getMessage() {
