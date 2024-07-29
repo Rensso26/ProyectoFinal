@@ -64,10 +64,6 @@ const AdminPanel = ({ user, onLogout }) => {
     navigate('/create-product');
   };
 
-  const handleManufactureProduct = () => {
-    navigate('/manufacture-product');
-  };
-
   const handleAcceptRequest = (request) => {
     createManufacturing(request.id, request.cantidad)
       .then(() => {
@@ -108,9 +104,10 @@ const AdminPanel = ({ user, onLogout }) => {
             <button className="btn btn-success" onClick={handleCreateProduct}>
               Crear Producto
             </button>
-            <button className="btn btn-warning" onClick={handleManufactureProduct}>
+            {/* El botón para fabricar producto ha sido eliminado */}
+            {/* <button className="btn btn-warning" onClick={handleManufactureProduct}>
               Fabricar Producto
-            </button>
+            </button> */}
           </div>
 
           <div className="mt-5">
