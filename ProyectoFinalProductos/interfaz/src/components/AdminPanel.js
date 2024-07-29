@@ -1,20 +1,16 @@
-import { useEffect, useState, useContext } from 'react';
-import SockJS from 'sockjs-client';
-import { Client } from '@stomp/stompjs';
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ProductContext } from '../context/ProductContext';
 import { listPeticiones } from '../services/PeticionesServices';
 import { getToyById } from '../services/ToyServices';
 import { createManufacturing } from '../services/ManufacturingService';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom';
 
 const AdminPanel = ({ user, onLogout }) => {
   const { setSelectedProducts } = useContext(ProductContext);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [peticiones, setPeticiones] = useState([]);
   const [toys, setToys] = useState({});
-  const [stompClient, setStompClient] = useState(null);
-  const [subscription, setSubscription] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,47 +21,6 @@ const AdminPanel = ({ user, onLogout }) => {
 
     // Limpiar el intervalo cuando el componente se desmonte
     return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    // Configurar STOMP client
-    const client = new Client({
-      brokerURL: 'ws://localhost:8080/fabrication-websocket', // Reemplaza con la URL de tu servidor WebSocket
-      connectHeaders: {
-        login: 'user',
-        passcode: 'password',
-      },
-      debug: function (str) {
-        console.log(str);
-      },
-      onConnect: () => {
-        console.log('Connected to WebSocket');
-        const sub = client.subscribe('/topic/fabrication', (message) => {
-          console.log('Received message:', message.body);
-          // Actualiza tu estado o maneja el mensaje recibido aquí
-        });
-        setSubscription(sub);
-      },
-      onStompError: (frame) => {
-        console.error('Broker reported error:', frame);
-      },
-      onWebSocketError: (error) => {
-        console.error('WebSocket error:', error);
-      },
-    });
-
-    client.activate();
-    setStompClient(client);
-
-    // Cleanup on unmount
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-      if (client) {
-        client.deactivate();
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -165,20 +120,8 @@ const AdminPanel = ({ user, onLogout }) => {
                   <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                     {toys[peticion.id] ? toys[peticion.id].name : 'Cargando...'} - {peticion.cantidad}
                     <div>
-                      <button
-                        className="btn btn-success btn-sm mr-2"
-                        onClick={() => handleAcceptRequest(peticion)}
-                        disabled={peticion.processed}
-                      >
-                        Aceptar
-                      </button>
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleRejectRequest(peticion)}
-                        disabled={peticion.processed}
-                      >
-                        Rechazar
-                      </button>
+                      <button className="btn btn-success btn-sm mr-2" onClick={() => handleAcceptRequest(peticion)}>Aceptar</button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleRejectRequest(peticion)}>Rechazar</button>
                     </div>
                   </li>
                 ))
