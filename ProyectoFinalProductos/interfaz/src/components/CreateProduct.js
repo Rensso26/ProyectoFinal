@@ -14,10 +14,18 @@ const CreateProduct = () => {
   const [timePinter, setTimePinter] = useState('');
   const [timePackaging, setTimePackaging] = useState('');
   const [category, setCategory] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validación para tiempos
+    if (timeEnsable < 0 || timePinter < 0 || timePackaging < 0) {
+      setError('El tiempo no puede ser menor a 0 segundos.');
+      return;
+    }
+
     const newProduct = {
       name,
       parts,
@@ -53,6 +61,7 @@ const CreateProduct = () => {
         </Link>
       </div>
       <h2>Crear Producto</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="row mb-3">
           <label htmlFor="name" className="col-sm-2 col-form-label">Nombre del Producto</label>
@@ -90,6 +99,7 @@ const CreateProduct = () => {
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
+              min="0"  // Agrega el atributo min para evitar valores negativos
             />
           </div>
         </div>
@@ -132,7 +142,7 @@ const CreateProduct = () => {
           </div>
         </div>
         <div className="row mb-3">
-          <label htmlFor="timeEnsable" className="col-sm-2 col-form-label">Tiempo de Ensamblaje (horas)</label>
+          <label htmlFor="timeEnsable" className="col-sm-2 col-form-label">Tiempo de Ensamblaje (segundos)</label>
           <div className="col-sm-10">
             <input
               type="number"
@@ -141,11 +151,12 @@ const CreateProduct = () => {
               value={timeEnsable}
               onChange={(e) => setTimeEnsable(e.target.value)}
               required
+              min="0"  // Agrega el atributo min para evitar valores negativos
             />
           </div>
         </div>
         <div className="row mb-3">
-          <label htmlFor="timePinter" className="col-sm-2 col-form-label">Tiempo de Pintura (horas)</label>
+          <label htmlFor="timePinter" className="col-sm-2 col-form-label">Tiempo de Pintura (segundos)</label>
           <div className="col-sm-10">
             <input
               type="number"
@@ -154,11 +165,12 @@ const CreateProduct = () => {
               value={timePinter}
               onChange={(e) => setTimePinter(e.target.value)}
               required
+              min="0"  // Agrega el atributo min para evitar valores negativos
             />
           </div>
         </div>
         <div className="row mb-3">
-          <label htmlFor="timePackaging" className="col-sm-2 col-form-label">Tiempo de Empaque (horas)</label>
+          <label htmlFor="timePackaging" className="col-sm-2 col-form-label">Tiempo de Empaque (segundos)</label>
           <div className="col-sm-10">
             <input
               type="number"
@@ -167,6 +179,7 @@ const CreateProduct = () => {
               value={timePackaging}
               onChange={(e) => setTimePackaging(e.target.value)}
               required
+              min="0"  // Agrega el atributo min para evitar valores negativos
             />
           </div>
         </div>
